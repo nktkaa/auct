@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @item.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @item.description %>
+</p>
+
+<p>
+  <strong>Start price:</strong>
+  <%= @item.start_price %><%= @item.currency.code %>
+</p>
+
+<p>
+  <strong>End date:</strong>
+  <%= @item.end_date %>
+</p>
+
+<h3>Current bids:</h3>
+<% @bids.each do |bid| %>
+  <p><strong><%= bid.bid %><%= @item.currency.code %></strong> by <%= bid.user.email %></p>
+<% end %>
+
+<%= form_with url: new_bid_item_path, method: 'post' do %>
+  <%= text_field_tag(:bid_value) %>
+  <%= current_currency.code %>
+  <%= submit_tag('Make a bid') %>
+<% end %>
+
+<%= link_to 'Edit', edit_item_path(@item) %> |
+<%= link_to 'Back', items_path %>

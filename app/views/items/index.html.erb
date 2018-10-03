@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Items</h1>
+
+<p>Set your currency:</p>
+
+<form>
+  <div class="form-group">
+    <%= select_tag(:currency_id, options_for_select(Currency.codes, Currency.codes.first), class: 'form-control') %>
+  </div>
+</form>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Start price</th>
+      <th>End date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= item.description %></td>
+        <td><%= item.start_price %> <%= item.currency.code %></td>
+        <td><%= item.end_date %></td>
+        <td><%= link_to 'Show', item %></td>
+        <% if current_users_item?(item) %>
+          <td><%= link_to 'Edit', edit_item_path(item) %></td>
+          <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Item', new_item_path %>
