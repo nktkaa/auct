@@ -37,11 +37,9 @@ class ItemsController < ApplicationController
   end
 
   def new_bid
-    coef = get_currency_coef(current_currency.code, @item.currency.code)
-    bid_value = params[:bid_value].to_i*coef
-    biggest_bid = @item.bids.order(bid: :desc).first.bid || @item.start_price
-    if biggest_bid*coef < bid_value
-      Bid.create(bid: bid_value, item: @item, user: current_user)
+    bid_value = Bid.convert_currency(current_currency.code, @item.currency.code, params[:bid_value].to_i)
+    if @item.highest_bid < bid_value
+      Bid.new(bid: bid_value, item: @item, user: current_user)
     else
       flash[:alert] = 'Your bid is smaller than biggest bid or start price'
     end

@@ -1,5 +1,7 @@
 <p id="notice"><%= notice %></p>
-
+<% if flash.alert %>
+  <p><%= flash.alert %></p>
+<% end %>
 <p>
   <strong>Name:</strong>
   <%= @item.name %>
@@ -22,10 +24,10 @@
 
 <h3>Current bids:</h3>
 <% @bids.each do |bid| %>
-  <p><strong><%= bid.bid %><%= @item.currency.code %></strong> by <%= bid.user.email %></p>
+  <p><strong><%= bid.bid.round %><%= @item.currency.code %></strong> by <%= bid.user.email %></p>
 <% end %>
 
-<%= form_with url: new_bid_item_path, method: 'post' do %>
+<%= form_with url: new_bid_item_path, method: 'post', local: true do %>
   <%= text_field_tag(:bid_value) %>
   <%= current_currency.code %>
   <%= submit_tag('Make a bid') %>
